@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+sqlalchemy = "*"
+pymysql = "*"
+marshmallow = "*"
+alembic = "*"
+pyjwt = "*"
+pytest = "*"
+requests = "*"
+flask-cors = "*"
+gunicorn = "*"
+sentry-sdk = {extras = ["flask"],version = "==0.14.0"}
+
+[requires]
+python_version = "3.7"
