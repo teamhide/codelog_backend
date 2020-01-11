@@ -1,17 +1,51 @@
-name: CI
+name: Codelog
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
 
 jobs:
   build:
-
+    name: CI
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: codelog
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+
+#    - name: Setup Python 3.7.5
+#      uses: actions/setup-python@v1
+#      with:
+#        python-version: 3.7.5
+#
+#    - name: Install pipenv
+#      run: pip3 install pipenv
+#
+#    - name: Install Dependencies
+#      run: pipenv install --system
+#
+#    - name: Testing
+#      env:
+#        env: testing
+#      run: pytest
+
+    - name: Build & Push image
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        $(aws ecr get-login --no-include-email)
+        docker build -t codelog .
+        docker tag codelog ${{ secrets.ECR_URL }}
+        docker push ${{ secrets.ECR_URL }}
