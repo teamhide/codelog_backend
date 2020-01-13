@@ -40,7 +40,7 @@ class GithubLoginUsecase(UserUsecase):
                 'redirect_uri': OAuthConfig.github_redirect_uri,
             }
         )
-        pattern = r'access_token=(\w+)'
+        pattern = 'access_token=(\w+)'
 
         try:
             github_access_token = re.findall(pattern, response.text)[0]
@@ -55,7 +55,18 @@ class GithubLoginUsecase(UserUsecase):
         ).json()
         nickname = response.get('login')
         avatar_url = response.get('avatar_url')
-        email = response.get('email')
+
+        response = requests.get(
+            url='https://api.github.com/user/emails',
+            headers={
+                'Authorization': f'token {github_access_token}'
+            }
+        ).json()[0].get('email')
+
+        if type(response) == list:
+            email = response[0]
+        else:
+            email = response
 
         if not email:
             abort(400, error='email required')
