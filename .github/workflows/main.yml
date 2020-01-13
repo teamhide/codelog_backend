@@ -14,7 +14,8 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: codelog
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -29,11 +30,11 @@ jobs:
 
     - name: Init database
       run: |
-        mysql -uroot -h127.0.0.1 -pcodelog -e 'CREATE USER codelog@localhost IDENTIFIED BY "codelog"'
-        mysql -uroot -h127.0.0.1 -pcodelog -e 'CREATE DATABASE test'
-        mysql -uroot -h127.0.0.1 -pcodelog -e 'CREATE DATABASE codelog'
-        mysql -uroot -h127.0.0.1 -pcodelog -e 'GRANT ALL PRIVILEGES ON test.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
-        mysql -uroot -h127.0.0.1 -pcodelog -e 'GRANT ALL PRIVILEGES ON codelog.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
+        mysql -uroot -h127.0.0.1 -proot -e 'CREATE USER codelog@localhost IDENTIFIED BY "codelog"'
+        mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE test'
+        mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE codelog'
+        mysql -uroot -h127.0.0.1 -proot -e 'GRANT ALL PRIVILEGES ON test.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
+        mysql -uroot -h127.0.0.1 -proot -e 'GRANT ALL PRIVILEGES ON codelog.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
 
     - name: Install pipenv
       run: pip3 install pipenv
