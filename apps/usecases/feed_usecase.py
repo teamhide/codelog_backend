@@ -116,7 +116,7 @@ class CreateFeedUsecase(FeedUsecase):
         if len(tags) > 100:
             return False
 
-        tags = re.findall('#\w+\s*\w+', tags)
+        tags = re.findall(r'#\w+\s*\w+', tags)
 
         for tag in tags:
             if len(tag) > 20:

@@ -45,6 +45,8 @@ class DevelopmentConfig(Config):
 @dataclass(frozen=True)
 class TestingConfig(Config):
     env: str = 'testing'
+    db_name: str = os.getenv('DB_NAME', 'test')
+    db_url: str = f'mysql+pymysql://codelog:codelog@localhost:3306/{db_name}'
     debug: bool = True
     jwt_secret_key = 'codelog'
     jwt_algorithm = 'HS256'

@@ -28,3 +28,15 @@ class User(Base, TimestampMixin):
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
+
+    def __str__(self):
+        return f'' \
+            f'User(id={self.id}, ' \
+            f'email={self.email}, ' \
+            f'nickname={self.nickname}, ' \
+            f'avatar_url={self.avatar_url}, ' \
+            f'login_type={self.login_type}, ' \
+            f'access_token={self.access_token}, ' \
+            f'refresh_token={self.refresh_token}, ' \
+            f'created_at={self.created_at}, ' \
+            f'updated_at={self.updated_at})'

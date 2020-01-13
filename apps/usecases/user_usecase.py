@@ -40,7 +40,7 @@ class GithubLoginUsecase(UserUsecase):
                 'redirect_uri': OAuthConfig.github_redirect_uri,
             }
         )
-        pattern = 'access_token=(\w+)'
+        pattern = r'access_token=(\w+)'
 
         try:
             github_access_token = re.findall(pattern, response.text)[0]
