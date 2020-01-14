@@ -29,7 +29,7 @@ class Feed(Base, TimestampMixin):
     image = Column(Unicode(255), nullable=True)
     title = Column(Unicode(255), nullable=True)
     description = Column(Unicode(255), nullable=True)
-    url = Column(Unicode(255), nullable=False)
+    url = Column(Unicode(1000), nullable=False)
     user = relationship('User', uselist=False)
     tags = relationship('Tag', secondary=feed_tag, back_populates='feeds')
     is_private = Column(Boolean, default=True)
