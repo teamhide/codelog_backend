@@ -55,12 +55,10 @@ class CreateFeedUsecase(FeedUsecase):
         # Get og tag info
         og_info = self._parse(url=url)
 
-        # Check tags is valid
-        if self._process_tags(tags=tags) is False:
-            abort(400, error='invalid tag')
-
         # Process tags
         tags = self._process_tags(tags=tags)
+        if tags is False:
+            abort(400, error='invalid tag')
 
         # Create feed
         feed = self.feed_repo.create_feed(
