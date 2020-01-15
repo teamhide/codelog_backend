@@ -2,6 +2,7 @@ import abc
 from typing import List, Union, Optional
 
 from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
 
 from apps.entities import FeedEntity, TagEntity
 from apps.models import Feed, Tag
@@ -60,7 +61,9 @@ class FeedRepo:
 
 class FeedMySQLRepo(FeedRepo):
     def get_feed(self, feed_id: int):
-        feed = session.query(Feed).filter(Feed.id == feed_id).first()
+        feed = session.query(Feed).options(
+            joinedload(Feed.user)
+        ).options(joinedload(Feed.tags)).filter(Feed.id == feed_id).first()
 
         if not feed:
             return None
@@ -72,7 +75,9 @@ class FeedMySQLRepo(FeedRepo):
         user_id: int = None,
         prev: int = None,
     ) -> List[FeedEntity]:
-        query = session.query(Feed)
+        query = session.query(Feed).options(
+            joinedload(Feed.user)
+        ).options(joinedload(Feed.tags))
 
         if user_id:
             query = query.filter(
@@ -150,7 +155,9 @@ class FeedMySQLRepo(FeedRepo):
         prev: int = None,
         user_id: int = None,
     ) -> List[FeedEntity]:
-        query = session.query(Feed)
+        query = session.query(Feed).options(
+            joinedload(Feed.user)
+        ).options(joinedload(Feed.tags))
 
         if prev:
             query = query.filter(Feed.id < prev)

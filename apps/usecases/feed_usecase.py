@@ -64,7 +64,7 @@ class CreateFeedUsecase(FeedUsecase):
         feed = self.feed_repo.create_feed(
             user_id=user.id,
             url=url,
-            tags=tags[:3],
+            tags=tags[:3] if tags else [],
             image=og_info.image,
             title=og_info.title,
             description=og_info.description,
