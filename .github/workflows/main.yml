@@ -31,10 +31,10 @@ jobs:
         mysql -uroot -h127.0.0.1 -proot -e 'GRANT ALL PRIVILEGES ON test.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
         mysql -uroot -h127.0.0.1 -proot -e 'GRANT ALL PRIVILEGES ON codelog.* TO codelog@localhost IDENTIFIED BY "codelog" WITH GRANT OPTION'
 
-    - name: Setup Python 3.7.5
+    - name: Setup Python 3.8.1
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7.5
+        python-version: 3.8.1
 
     - name: Install pipenv
       run: pip3 install pipenv
