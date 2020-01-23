@@ -89,7 +89,7 @@ class FeedMySQLRepo(FeedRepo):
         if prev:
             query = query.filter(Feed.id < prev)
 
-        feeds = query.order_by(Feed.id.desc()).limit(10)
+        feeds = query.order_by(Feed.id.desc()).limit(12)
 
         return [
             feed.to_entity()
@@ -174,7 +174,7 @@ class FeedMySQLRepo(FeedRepo):
             ),
         )
 
-        feeds = query.order_by(Feed.id.desc()).limit(10)
+        feeds = query.order_by(Feed.id.desc()).limit(12)
 
         return [
             feed.to_entity()
