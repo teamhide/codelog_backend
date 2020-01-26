@@ -135,6 +135,9 @@ class CreateFeedUsecase(FeedUsecase):
 
     def _is_spam(self, user_id: int) -> bool:
         feeds = self.feed_repo.get_recent_feeds(user_id=user_id, limit=1)
+        if len(feeds) < 3:
+            return False
+
         diff = datetime.now() - feeds[0].created_at
 
         return diff.seconds < 10

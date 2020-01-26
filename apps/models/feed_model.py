@@ -33,6 +33,7 @@ class Feed(Base, TimestampMixin):
     user = relationship('User', uselist=False)
     tags = relationship('Tag', secondary=feed_tag, back_populates='feeds')
     is_private = Column(Boolean, default=True)
+    is_read = Column(Boolean, default=False)
 
     def to_entity(self):
         return FeedEntity(
@@ -48,23 +49,13 @@ class Feed(Base, TimestampMixin):
                 for tag in self.tags
             ],
             is_private=self.is_private,
+            is_read=self.is_read,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
 
     def __str__(self):
-        return f'<Feed(' \
-            f'id={self.id}, ' \
-            f'user_id={self.user_id}, ' \
-            f'image={self.image}, ' \
-            f'title={self.title}, ' \
-            f'description={self.description}, ' \
-            f'url={self.url}, ' \
-            f'user={self.user}, ' \
-            f'tags={self.tags}, ' \
-            f'is_privagte={self.is_private}, ' \
-            f'created_at={self.created_at}, ' \
-            f'updated_at={self.updated_at})>'
+        return f'<Feed(id={self.id})'
 
 
 class Tag(Base, TimestampMixin):
@@ -83,9 +74,4 @@ class Tag(Base, TimestampMixin):
         )
 
     def __str__(self):
-        return f'Tag(' \
-            f'id={self.id}, ' \
-            f'name={self.name}, ' \
-            f'feeds={self.feeds}), ' \
-            f'created_at={self.created_at}, ' \
-            f'updated_at={self.updated_at})'
+        return f'Tag(id={self.id})'

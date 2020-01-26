@@ -9,6 +9,7 @@ class GetFeedListResponseSchema(Schema):
     description = fields.String(required=True)
     url = fields.String(required=True)
     tags = fields.List(fields.Str)
+    is_read = fields.Boolean(required=True)
     created_at = fields.String()
     updated_at = fields.String()
 
