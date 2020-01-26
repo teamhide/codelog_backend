@@ -44,6 +44,10 @@ def test_get_feed_list(create_feed_model_list, feed_repo):
         assert a.user.refresh_token == b.user.refresh_token
 
 
+def test_get_recent_feeds():
+    pass
+
+
 def test_create_feed(session, feed_repo, create_user_model):
     feed = feed_repo.create_feed(
         user_id=1,
@@ -111,3 +115,7 @@ def test_delete_feed(session, feed_repo, create_feed_model):
     feed_repo.delete_feed(feed_id=create_feed_model.id)
     feed = session.query(Feed).filter(Feed.id == create_feed_model.id).first()
     assert feed is None
+
+
+def test_read_feed():
+    pass

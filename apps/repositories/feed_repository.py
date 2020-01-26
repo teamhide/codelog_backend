@@ -62,6 +62,10 @@ class FeedRepo:
     def delete_feed(self, feed_id: int) -> None:
         pass
 
+    @abc.abstractmethod
+    def read_feed(self, feed_id: int) -> None:
+        pass
+
 
 class FeedMySQLRepo(FeedRepo):
     def get_feed(self, feed_id: int):
@@ -199,4 +203,11 @@ class FeedMySQLRepo(FeedRepo):
         feed = session.query(Feed).get(feed_id)
 
         session.delete(feed)
+        session.commit()
+
+    def read_feed(self, feed_id: int):
+        feed = session.query(Feed).get(feed_id)
+        feed.is_read = True
+
+        session.add(feed)
         session.commit()

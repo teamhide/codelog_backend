@@ -29,7 +29,9 @@ def test_get_feed_list_usecase(get_feed_list):
 @patch('apps.repositories.UserMySQLRepo.get_user')
 @patch('apps.usecases.CreateFeedUsecase._parse')
 @patch('apps.repositories.FeedMySQLRepo.create_feed')
-def test_create_feed_usecase(create_feed, _parse, get_user):
+@patch('apps.repositories.FeedMySQLRepo.get_recent_feeds')
+def test_create_feed_usecase(get_recent_feeds, create_feed, _parse, get_user):
+    get_recent_feeds.return_value = []
     _parse.return_value = OGTag(
         title='test title',
         image='test image',
@@ -114,3 +116,7 @@ def test_delete_feed_usecase(delete_feed, get_feed, get_user):
         feed_id=1,
     )
     assert result is True
+
+
+def test_read_feed():
+    pass

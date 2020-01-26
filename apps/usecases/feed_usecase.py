@@ -182,3 +182,18 @@ class DeleteFeedUsecase(FeedUsecase):
         self.feed_repo.delete_feed(feed_id=feed_id)
 
         return True
+
+
+class ReadFeedUsecase(FeedUsecase):
+    def execute(self, payload: dict, feed_id: int) -> Union[NoReturn, bool]:
+        feed = self.feed_repo.get_feed(feed_id=feed_id)
+
+        if not feed:
+            abort(404, error='feed not exist')
+
+        if payload['user_id'] != feed.user_id:
+            abort(401, error='permission denied')
+
+        self.feed_repo.read_feed(feed_id=feed_id)
+
+        return True

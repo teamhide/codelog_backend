@@ -9,6 +9,7 @@ from apps.presenters import (
     GetTagListPresenter,
     SearchFeedPresenter,
     DeleteFeedPresenter,
+    ReadFeedPresenter,
 )
 from apps.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
 from apps.usecases import (
@@ -17,6 +18,7 @@ from apps.usecases import (
     GetTagListUsecase,
     SearchFeedUsecase,
     DeleteFeedUsecase,
+    ReadFeedUsecase,
 )
 from core.decorators import is_jwt_authenticated
 from core.exceptions import abort
@@ -71,3 +73,10 @@ def search_feed() -> Union[NoReturn, jsonify]:
 def delete_feed(payload: dict, feed_id: int) -> Union[NoReturn, jsonify]:
     response = DeleteFeedUsecase().execute(payload=payload, feed_id=feed_id)
     return DeleteFeedPresenter.transform(response=response)
+
+
+@feed_bp.route('/<int:feed_id>/read', methods=['POST'])
+@is_jwt_authenticated()
+def read_feed(payload: dict, feed_id: int) -> Union[NoReturn, jsonify]:
+    response = ReadFeedUsecase().execute(payload=payload, feed_id=feed_id)
+    return ReadFeedPresenter.transform(response=response)

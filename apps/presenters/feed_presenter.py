@@ -44,3 +44,9 @@ class DeleteFeedPresenter(Presenter):
     @classmethod
     def transform(cls, response) -> jsonify:
         return jsonify({'status': response})
+
+
+class ReadFeedPresenter(Presenter):
+    @classmethod
+    def transform(cls, response):
+        return jsonify({'status': response})
