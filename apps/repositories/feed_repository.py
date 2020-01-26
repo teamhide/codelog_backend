@@ -25,6 +25,10 @@ class FeedRepo:
         pass
 
     @abc.abstractmethod
+    def get_recent_feeds(self, user_id: int, limit: int) -> List[FeedEntity]:
+        pass
+
+    @abc.abstractmethod
     def create_feed(
         self,
         user_id: int,
@@ -90,6 +94,16 @@ class FeedMySQLRepo(FeedRepo):
             query = query.filter(Feed.id < prev)
 
         feeds = query.order_by(Feed.id.desc()).limit(12)
+
+        return [
+            feed.to_entity()
+            for feed in feeds
+        ]
+
+    def get_recent_feeds(self, user_id: int, limit: int) -> List[FeedEntity]:
+        feeds = session.query(Feed).filter(
+            Feed.user_id == user_id
+        ).order_by(Feed.id.desc()).limit(limit)
 
         return [
             feed.to_entity()

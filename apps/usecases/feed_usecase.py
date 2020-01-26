@@ -1,5 +1,6 @@
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from typing import List, Union, NoReturn
 
 import requests
@@ -52,6 +53,10 @@ class CreateFeedUsecase(FeedUsecase):
 
         if not user:
             abort(400, error='user does not exist')
+
+        # Check spam
+        if self._is_spam(user_id=user.id):
+            abort(400, error='too many request')
 
         # Get og tag info
         og_info = self._parse(url=url)
@@ -127,6 +132,12 @@ class CreateFeedUsecase(FeedUsecase):
                 return False
 
         return tags
+
+    def _is_spam(self, user_id: int) -> bool:
+        feeds = self.feed_repo.get_recent_feeds(user_id=user_id, limit=1)
+        diff = datetime.now() - feeds[0].created_at
+
+        return diff.seconds < 10
 
 
 class GetTagListUsecase(FeedUsecase):
