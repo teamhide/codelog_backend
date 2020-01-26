@@ -90,7 +90,12 @@ class CreateFeedUsecase(FeedUsecase):
         if title:
             ogtag.title = title[:50]
         else:
-            ogtag.title = None
+            title_pattern = '<title>(.+?)</title>'
+            title = re.findall(title_pattern, r.text)
+            if title:
+                ogtag.title = title[:50]
+            else:
+                ogtag.title = None
 
         image_pattern = '"og:image" content="(.+?)"'
         image = re.findall(image_pattern, r.text)
