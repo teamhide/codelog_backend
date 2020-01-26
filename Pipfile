@@ -17,6 +17,8 @@ requests = "*"
 flask-cors = "*"
 gunicorn = "*"
 sentry-sdk = {extras = ["flask"],version = "==0.14.0"}
+lxml = "*"
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.7"

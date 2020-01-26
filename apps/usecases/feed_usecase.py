@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import List, Union, NoReturn
 
 import requests
+from bs4 import BeautifulSoup
 
 from apps.entities import FeedEntity, TagEntity
 from apps.repositories import FeedMySQLRepo, UserMySQLRepo
@@ -83,33 +84,33 @@ class CreateFeedUsecase(FeedUsecase):
             abort(400, error='incorrect url')
 
         ogtag = OGTag()
+        soup = BeautifulSoup(r.text, 'lxml')
 
-        title_pattern = '"og:title" content="(.+?)"'
-        title = re.findall(title_pattern, r.text)
-
+        title = soup.find('meta', property='og:title')
         if title:
-            ogtag.title = title[:50]
+            ogtag.title = title.get('content')[:50] \
+                if title.get('content') else None
         else:
-            title_pattern = '<title>(.+?)</title>'
-            title = re.findall(title_pattern, r.text)
+            title = soup.find('title')
             if title:
-                ogtag.title = title[:50]
+                ogtag.title = title.get_text()
             else:
                 ogtag.title = None
 
-        image_pattern = '"og:image" content="(.+?)"'
-        image = re.findall(image_pattern, r.text)
-
-        if image and image[0].startswith('http'):
-            ogtag.image = image
+        image = soup.find('meta', property='og:image')
+        if image:
+            if image.get('content') and image.get('content').startswith('http'):
+                ogtag.image = image.get('content')
+            else:
+                ogtag.image = None
         else:
             ogtag.image = None
 
-        description_pattern = '"og:description" content="(.+?)"'
-        description = re.findall(description_pattern, r.text)
+        description = soup.find('meta', property='og:description')
 
         if description:
-            ogtag.description = description[:50]
+            ogtag.description = description.get('content')[:50] \
+                if description.get('content') else None
         else:
             ogtag.description = None
 
