@@ -5,6 +5,7 @@ from marshmallow.exceptions import ValidationError
 
 from apps.presenters import (
     GetFeedListPresenter,
+    GetPrivateFeedListPresenter,
     CreateFeedPresenter,
     GetTagListPresenter,
     SearchFeedPresenter,
@@ -36,6 +37,16 @@ def get_feed_list() -> Union[NoReturn, jsonify]:
     return GetFeedListPresenter.transform(response=feeds)
 
 
+@feed_bp.route('/private', methods=['GET'])
+def get_private_feed_list() -> Union[NoReturn, jsonify]:
+    header = request.headers.get('Authorization')
+    feeds = GetFeedListUsecase().execute(
+        header=header,
+        prev=request.args.get('prev'),
+    )
+    return GetPrivateFeedListPresenter.transform(response=feeds)
+
+
 @feed_bp.route('/', methods=['POST'])
 @is_jwt_authenticated()
 def create_feed(payload: dict) -> Union[NoReturn, jsonify]:
@@ -45,7 +56,6 @@ def create_feed(payload: dict) -> Union[NoReturn, jsonify]:
         abort(400, error='validation error')
 
     feed = CreateFeedUsecase().execute(**validator, payload=payload)
-
     return CreateFeedPresenter.transform(response=feed)
 
 
@@ -64,7 +74,6 @@ def search_feed() -> Union[NoReturn, jsonify]:
 
     header = request.headers.get('Authorization')
     feeds = SearchFeedUsecase().execute(**validator, header=header)
-
     return SearchFeedPresenter.transform(response=feeds)
 
 
