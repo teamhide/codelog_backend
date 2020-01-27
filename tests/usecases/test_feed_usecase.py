@@ -1,8 +1,10 @@
+from datetime import datetime
 from unittest.mock import patch
 
-from apps.entities import FeedEntity, UserEntity, TagEntity
-from werkzeug.exceptions import HTTPException
 import pytest
+from werkzeug.exceptions import HTTPException
+
+from apps.entities import FeedEntity, UserEntity, TagEntity
 from apps.usecases import (
     GetFeedListUsecase,
     CreateFeedUsecase,
@@ -12,7 +14,6 @@ from apps.usecases import (
     DeleteFeedUsecase,
     ReadFeedUsecase,
 )
-
 
 header = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.Z7kKIXJIcvElYY7PMM7wx8qe43GAbTADYOct5eqEseA'
 
@@ -58,7 +59,22 @@ def test_create_feed_usecase(get_recent_feeds, create_feed, _parse, get_user):
             payload={'user_id': 1}
         )
 
+    # Case of spam
+    get_recent_feeds.return_value = [
+        FeedEntity(created_at=datetime.now()),
+        FeedEntity(),
+        FeedEntity(),
+    ]
+    with pytest.raises(HTTPException):
+        CreateFeedUsecase().execute(
+            url='https://hides.kr',
+            tags='#pythonpythonpythonpythonpythonpython',
+            is_private='true',
+            payload={'user_id': 1}
+        )
+
     # Case of success
+    get_recent_feeds.return_value = []
     create_feed.return_value = FeedEntity()
     feed = CreateFeedUsecase().execute(
             url='https://hides.kr',
