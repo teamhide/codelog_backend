@@ -10,6 +10,7 @@ from apps.usecases import (
     GetTagListUsecase,
     SearchFeedUsecase,
     DeleteFeedUsecase,
+    ReadFeedUsecase,
 )
 
 
@@ -94,29 +95,35 @@ def test_delete_feed_usecase(delete_feed, get_feed, get_user):
     # Case of user is None
     get_user.return_value = None
     with pytest.raises(HTTPException):
-        DeleteFeedUsecase().execute(
-            payload={'user_id': 1},
-            feed_id=1,
-        )
+        DeleteFeedUsecase().execute(payload={'user_id': 1}, feed_id=1)
 
     # Case of permission denied
     get_user.return_value = UserEntity(id=1)
     get_feed.return_value = FeedEntity(user_id=2)
     with pytest.raises(HTTPException):
-        DeleteFeedUsecase().execute(
-            payload={'user_id': 2},
-            feed_id=1,
-        )
+        DeleteFeedUsecase().execute(payload={'user_id': 2}, feed_id=1)
 
     get_feed.return_value = FeedEntity(user_id=1)
     delete_feed.return_value = True
     # Case of success
-    result = DeleteFeedUsecase().execute(
-        payload={'user_id': 1},
-        feed_id=1,
-    )
+    result = DeleteFeedUsecase().execute(payload={'user_id': 1}, feed_id=1)
     assert result is True
 
 
-def test_read_feed():
-    pass
+@patch('apps.repositories.FeedMySQLRepo.get_feed')
+@patch('apps.repositories.FeedMySQLRepo.read_feed')
+def test_read_feed(read_feed, get_feed):
+    # Case of feed is None
+    get_feed.return_value = None
+    with pytest.raises(HTTPException):
+        ReadFeedUsecase().execute(payload={'user_id': 1}, feed_id=1)
+
+    # Case of permission denied
+    get_feed.return_value = FeedEntity(id=1, user_id=2)
+    with pytest.raises(HTTPException):
+        ReadFeedUsecase().execute(payload={'user_id': 1}, feed_id=1)
+
+    # Case of success
+    get_feed.return_value = FeedEntity(id=1, user_id=1)
+    result = ReadFeedUsecase().execute(payload={'user_id': 1}, feed_id=1)
+    assert result is True

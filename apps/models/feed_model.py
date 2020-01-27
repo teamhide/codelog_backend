@@ -55,7 +55,7 @@ class Feed(Base, TimestampMixin):
         )
 
     def __str__(self):
-        return f'<Feed(id={self.id})'
+        return f'Feed(id={self.id})'
 
 
 class Tag(Base, TimestampMixin):
