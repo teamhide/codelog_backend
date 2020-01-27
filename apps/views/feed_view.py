@@ -84,7 +84,7 @@ def delete_feed(payload: dict, feed_id: int) -> Union[NoReturn, jsonify]:
     return DeleteFeedPresenter.transform(response=response)
 
 
-@feed_bp.route('/<int:feed_id>/read', methods=['POST'])
+@feed_bp.route('/<int:feed_id>/read', methods=['GET'])
 @is_jwt_authenticated()
 def read_feed(payload: dict, feed_id: int) -> Union[NoReturn, jsonify]:
     response = ReadFeedUsecase().execute(payload=payload, feed_id=feed_id)
