@@ -16,10 +16,10 @@ class GetFeedListResponseSchema(Schema):
     updated_at = fields.Method('get_updated_at')
 
     def get_created_at(self, obj):
-        return obj.created_at + timedelta(hours=9)
+        return str((obj.created_at + timedelta(hours=9)).replace(microsecond=0))
 
     def get_updated_at(self, obj):
-        return obj.updated_at + timedelta(hours=9)
+        return str((obj.updated_at + timedelta(hours=9)).replace(microsecond=0))
 
 
 class CreateFeedRequestSchema(Schema):
