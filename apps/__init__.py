@@ -7,8 +7,8 @@ from core.settings import get_config
 
 
 def init_listeners(app: Flask):
-    @app.after_request
-    def after_request(response):
+    @app.teardown_appcontext
+    def shutdown_session(response):
         session.remove()
         return response
 
