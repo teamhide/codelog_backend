@@ -1,6 +1,6 @@
 from sqlalchemy import (Column, BigInteger, Unicode)
 
-from apps.entities import UserEntity
+from app.entities import UserEntity
 from core.databases import Base
 from core.databases.mixin import TimestampMixin
 

@@ -3,7 +3,7 @@ from typing import NoReturn, Union
 from flask import Blueprint, request, jsonify
 from marshmallow.exceptions import ValidationError
 
-from apps.presenters import (
+from app.presenters import (
     GetFeedListPresenter,
     GetPrivateFeedListPresenter,
     CreateFeedPresenter,
@@ -12,8 +12,8 @@ from apps.presenters import (
     DeleteFeedPresenter,
     ReadFeedPresenter,
 )
-from apps.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
-from apps.usecases import (
+from app.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
+from app.usecases import (
     GetFeedListUsecase,
     CreateFeedUsecase,
     GetTagListUsecase,

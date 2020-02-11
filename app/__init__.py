@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
+from pythondi import Provider, configure
 
-from apps.views import feed_bp, user_bp, oauth_bp, home_bp
+from app.repositories import FeedRepo, FeedMySQLRepo, UserRepo, UserMySQLRepo
+from app.views import feed_bp, user_bp, oauth_bp, home_bp
 from core.databases import session
 from core.settings import get_config
 
@@ -42,9 +44,17 @@ def init_extensions(app: Flask):
         division_by_zero = 1 / 0
 
 
+def init_di(app: Flask):
+    provider = Provider()
+    provider.bind(FeedRepo, FeedMySQLRepo)
+    provider.bind(UserRepo, UserMySQLRepo)
+    configure(provider=provider)
+
+
 def create_app():
     app = Flask(__name__)
     init_blueprint(app=app)
     init_listeners(app=app)
     init_extensions(app=app)
+    init_di(app=app)
     return app

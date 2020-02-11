@@ -9,7 +9,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from apps.entities import FeedEntity, TagEntity
+from app.entities import FeedEntity, TagEntity
 from core.databases import Base
 from core.databases.mixin import TimestampMixin
 

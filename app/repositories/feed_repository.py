@@ -4,8 +4,8 @@ from typing import List, Union, Optional
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 
-from apps.entities import FeedEntity, TagEntity
-from apps.models import Feed, Tag
+from app.entities import FeedEntity, TagEntity
+from app.models import Feed, Tag
 from core.databases import session
 
 

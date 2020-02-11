@@ -1,8 +1,17 @@
 import pytest
 
-from apps.models import Feed, User, Tag
-from apps.repositories import FeedMySQLRepo, UserMySQLRepo
+from app.models import Feed, User, Tag
+from app.repositories import FeedRepo, FeedMySQLRepo, UserRepo, UserMySQLRepo
 from core.databases import Base, engine, session as db_session
+from pythondi import Provider, configure_after_clear
+
+
+@pytest.fixture
+def init_di():
+    provider = Provider()
+    provider.bind(FeedRepo, FeedMySQLRepo)
+    provider.bind(UserRepo, UserMySQLRepo)
+    configure_after_clear(provider=provider)
 
 
 @pytest.yield_fixture

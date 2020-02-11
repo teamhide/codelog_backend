@@ -26,7 +26,7 @@ sys.path.insert(
 fileConfig(config.config_file_name)
 from core.databases import Base
 from core.settings import get_config
-from apps.models import *
+from app.models import *
 
 # add your model's MetaData object here
 # for 'autogenerate' support

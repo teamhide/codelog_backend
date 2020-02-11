@@ -1,5 +1,5 @@
-from apps.entities import FeedEntity, TagEntity
-from apps.models import Feed
+from app.entities import FeedEntity, TagEntity
+from app.models import Feed
 
 
 def test_get_feed(create_feed_model, feed_repo):

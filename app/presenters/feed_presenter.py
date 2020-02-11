@@ -2,8 +2,8 @@ from typing import List
 
 from flask import jsonify
 
-from apps.entities import FeedEntity
-from apps.schemas import (
+from app.entities import FeedEntity
+from app.schemas import (
     GetFeedListResponseSchema,
     CreateFeedResponseSchema,
     GetTagListResponseSchema

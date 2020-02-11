@@ -2,8 +2,8 @@ import abc
 from typing import Optional
 from typing import Union
 
-from apps.entities import UserEntity
-from apps.models import User
+from app.entities import UserEntity
+from app.models import User
 from core.databases import session
 from core.exceptions import abort
 

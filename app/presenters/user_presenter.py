@@ -1,7 +1,7 @@
 from flask import jsonify
 
-from apps.schemas import OAuthLoginResponseSchema, RefreshTokenSchema
-from apps.usecases import Token
+from app.schemas import OAuthLoginResponseSchema, RefreshTokenSchema
+from app.usecases import Token
 from core.presenters import Presenter
 
 

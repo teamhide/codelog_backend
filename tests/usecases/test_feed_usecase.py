@@ -4,8 +4,8 @@ from unittest.mock import patch
 import pytest
 from werkzeug.exceptions import HTTPException
 
-from apps.entities import FeedEntity, UserEntity, TagEntity
-from apps.usecases import (
+from app.entities import FeedEntity, UserEntity, TagEntity
+from app.usecases import (
     GetFeedListUsecase,
     CreateFeedUsecase,
     OGTag,
@@ -18,8 +18,8 @@ from apps.usecases import (
 header = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.Z7kKIXJIcvElYY7PMM7wx8qe43GAbTADYOct5eqEseA'
 
 
-@patch('apps.repositories.FeedMySQLRepo.get_feed_list')
-def test_get_feed_list_usecase(get_feed_list):
+@patch('app.repositories.FeedMySQLRepo.get_feed_list')
+def test_get_feed_list_usecase(get_feed_list, init_di):
     get_feed_list.return_value = [FeedEntity()]
     feeds = GetFeedListUsecase().execute(
         header=header,
@@ -28,11 +28,11 @@ def test_get_feed_list_usecase(get_feed_list):
     assert isinstance(feeds[0], FeedEntity)
 
 
-@patch('apps.repositories.UserMySQLRepo.get_user')
-@patch('apps.usecases.CreateFeedUsecase._parse')
-@patch('apps.repositories.FeedMySQLRepo.create_feed')
-@patch('apps.repositories.FeedMySQLRepo.get_recent_feeds')
-def test_create_feed_usecase(get_recent_feeds, create_feed, _parse, get_user):
+@patch('app.repositories.UserMySQLRepo.get_user')
+@patch('app.usecases.CreateFeedUsecase._parse')
+@patch('app.repositories.FeedMySQLRepo.create_feed')
+@patch('app.repositories.FeedMySQLRepo.get_recent_feeds')
+def test_create_feed_usecase(get_recent_feeds, create_feed, _parse, get_user, init_di):
     get_recent_feeds.return_value = []
     _parse.return_value = OGTag(
         title='test title',
@@ -85,16 +85,16 @@ def test_create_feed_usecase(get_recent_feeds, create_feed, _parse, get_user):
     assert isinstance(feed, FeedEntity)
 
 
-@patch('apps.repositories.FeedMySQLRepo.get_tag_list')
-def test_get_tag_list_usecase(get_tag_list):
+@patch('app.repositories.FeedMySQLRepo.get_tag_list')
+def test_get_tag_list_usecase(get_tag_list, init_di):
     get_tag_list.return_value = [TagEntity()]
     tags = GetTagListUsecase().execute()
     assert type(tags) == list
     assert isinstance(tags[0], TagEntity)
 
 
-@patch('apps.repositories.FeedMySQLRepo.search_feed')
-def test_search_feed_usecase(search_feed):
+@patch('app.repositories.FeedMySQLRepo.search_feed')
+def test_search_feed_usecase(search_feed, init_di):
     search_feed.return_value = [FeedEntity()]
     feeds = SearchFeedUsecase().execute(
         header=header,
@@ -104,10 +104,10 @@ def test_search_feed_usecase(search_feed):
     assert isinstance(feeds[0], FeedEntity)
 
 
-@patch('apps.repositories.UserMySQLRepo.get_user')
-@patch('apps.repositories.FeedMySQLRepo.get_feed')
-@patch('apps.repositories.FeedMySQLRepo.delete_feed')
-def test_delete_feed_usecase(delete_feed, get_feed, get_user):
+@patch('app.repositories.UserMySQLRepo.get_user')
+@patch('app.repositories.FeedMySQLRepo.get_feed')
+@patch('app.repositories.FeedMySQLRepo.delete_feed')
+def test_delete_feed_usecase(delete_feed, get_feed, get_user, init_di):
     # Case of user is None
     get_user.return_value = None
     with pytest.raises(HTTPException):
@@ -126,9 +126,9 @@ def test_delete_feed_usecase(delete_feed, get_feed, get_user):
     assert result is True
 
 
-@patch('apps.repositories.FeedMySQLRepo.get_feed')
-@patch('apps.repositories.FeedMySQLRepo.read_feed')
-def test_read_feed(read_feed, get_feed):
+@patch('app.repositories.FeedMySQLRepo.get_feed')
+@patch('app.repositories.FeedMySQLRepo.read_feed')
+def test_read_feed(read_feed, get_feed, init_di):
     # Case of feed is None
     get_feed.return_value = None
     with pytest.raises(HTTPException):

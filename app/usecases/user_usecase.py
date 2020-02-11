@@ -4,8 +4,8 @@ from typing import Union, NoReturn
 
 import requests
 
-from apps.enums import LoginType
-from apps.repositories import UserMySQLRepo
+from app.enums import LoginType
+from app.repositories import UserMySQLRepo
 from core.exceptions import abort
 from core.settings import OAuthConfig
 from core.utils import TokenHelper

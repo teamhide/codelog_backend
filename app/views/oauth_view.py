@@ -1,17 +1,17 @@
 from flask import Blueprint, request
 from marshmallow import ValidationError
 
-from apps.presenters import (
+from app.presenters import (
     OAuthLoginPresenter,
     RefreshTokenPresenter,
     VerifyTokenPresenter,
 )
-from apps.schemas import (
+from app.schemas import (
     OAuthLoginRequestSchema,
     RefreshTokenSchema,
     VerityTokenRequestSchema,
 )
-from apps.usecases import (
+from app.usecases import (
     GithubLoginUsecase,
     GoogleLoginUsecase,
     KakaoLoginUsecase,

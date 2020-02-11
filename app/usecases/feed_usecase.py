@@ -5,9 +5,10 @@ from typing import List, Union, NoReturn
 
 import requests
 from bs4 import BeautifulSoup
+from pythondi import inject
 
-from apps.entities import FeedEntity, TagEntity
-from apps.repositories import FeedMySQLRepo, UserMySQLRepo
+from app.entities import FeedEntity, TagEntity
+from app.repositories import FeedRepo, UserRepo
 from core.exceptions import abort
 from core.settings import get_config
 from core.utils import TokenHelper
@@ -21,9 +22,10 @@ class OGTag:
 
 
 class FeedUsecase:
-    def __init__(self):
-        self.feed_repo = FeedMySQLRepo()
-        self.user_repo = UserMySQLRepo()
+    @inject()
+    def __init__(self, feed_repo: FeedRepo, user_repo: UserRepo):
+        self.feed_repo = feed_repo
+        self.user_repo = user_repo
 
 
 class GetFeedListUsecase(FeedUsecase):
