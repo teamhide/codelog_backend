@@ -48,7 +48,7 @@ jobs:
     - name: Testing
       env:
         ENV: testing
-      run: pytest -s
+      run: pytest
 
     - name: Build & Push image
       env:
