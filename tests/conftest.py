@@ -1,9 +1,9 @@
 import pytest
+from pythondi import Provider, configure_after_clear
 
 from app.models import Feed, User, Tag
 from app.repositories import FeedRepo, FeedMySQLRepo, UserRepo, UserMySQLRepo
 from core.databases import Base, engine, session as db_session
-from pythondi import Provider, configure_after_clear
 
 
 @pytest.fixture
