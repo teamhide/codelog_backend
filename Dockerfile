@@ -7,4 +7,4 @@ COPY . home
 WORKDIR /home
 RUN pipenv install --system
 
-CMD gunicorn -w4 "apps:create_app()" -b 0.0.0.0:8000 --access-logfile=- --error-logfile=- --capture-output
+CMD gunicorn -w4 "app:create_app()" -b 0.0.0.0:8000 --access-logfile=- --error-logfile=- --capture-output
